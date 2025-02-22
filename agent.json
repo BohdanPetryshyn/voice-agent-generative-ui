@@ -86,7 +86,7 @@
       "pronunciation_dictionary_locators": []
     },
     "conversation": {
-      "max_duration_seconds": 300,
+      "max_duration_seconds": 3600,
       "client_events": [
         "audio",
         "interruption",
