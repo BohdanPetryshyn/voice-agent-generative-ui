@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
         'create_form': ({ formSchema }) => {
           console.log("create_form called with:", formSchema);
           renderForm(JSON.parse(formSchema));
-          return 'Form is ready to be filled.';
+          return 'form_is_ready';
         },
       };
     });
@@ -69,10 +69,20 @@ function renderForm(formSchema) {
               optionElement.textContent = option.label;
               inputElement.appendChild(optionElement);
           });
+
+          // Set the pre-selected value if it exists
+          if (field.value !== undefined) {
+              inputElement.value = field.value;
+          }
       } else if (field.type === "textarea") {
           inputElement = document.createElement("textarea");
           inputElement.id = field.id;
           inputElement.name = field.id;
+          
+          // Set the pre-filled text content if it exists
+          if (field.value !== undefined) {
+              inputElement.value = field.value;
+          }
       } else {
           inputElement = document.createElement("input");
           inputElement.id = field.id;
@@ -88,6 +98,16 @@ function renderForm(formSchema) {
               }
               if (field.validation.max !== undefined) {
                   inputElement.max = field.validation.max;
+              }
+          }
+
+          // Set the pre-filled value if it exists
+          if (field.value !== undefined) {
+              // For number inputs, we need to handle null value specially
+              if (field.type === "number" && field.value === null) {
+                  inputElement.value = "";
+              } else {
+                  inputElement.value = field.value;
               }
           }
       }
