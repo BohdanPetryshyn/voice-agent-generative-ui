@@ -1,0 +1,183 @@
+{
+ "title": "Dynamic Form Schema",
+ "description": "A schema for defining dynamic forms with various field types.",
+ "type": "object",
+ "properties": {
+   "id": {
+     "type": "string",
+     "description": "Unique identifier for the form."
+   },
+   "fields": {
+     "type": "array",
+     "description": "List of form fields.",
+     "items": {
+       "oneOf": [
+         {
+           "title": "Text Input",
+           "type": "object",
+           "description": "A single-line text field used for short inputs like names, usernames, or identifiers.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "text" },
+             "maxLength": { "type": "integer", "description": "Maximum character length." },
+             "placeholder": { "type": "string", "description": "Placeholder text." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Email Input",
+           "type": "object",
+           "description": "A field specifically for email addresses, ensuring proper formatting and validation.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "email" },
+             "pattern": { "type": "string", "description": "Regex for validation." },
+             "placeholder": { "type": "string", "description": "Example: user@example.com." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Number Input",
+           "type": "object",
+           "description": "A numeric input field for values like age, quantity, or scores.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "number" },
+             "min": { "type": "number", "description": "Minimum allowed value." },
+             "max": { "type": "number", "description": "Maximum allowed value." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Date Input",
+           "type": "object",
+           "description": "A date picker input for selecting dates such as birthdate, booking date, ETA, departure time, or deadlines.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "date" },
+             "min": { "type": "string", "format": "date", "description": "Earliest selectable date." },
+             "max": { "type": "string", "format": "date", "description": "Latest selectable date." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Datetime-Local Input",
+           "type": "object",
+           "description": "A combined date and time picker without timezone support, used for scheduling or appointments.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "datetime-local" },
+             "min": { "type": "string", "format": "date-time", "description": "Earliest selectable date-time." },
+             "max": { "type": "string", "format": "date-time", "description": "Latest selectable date-time." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Time Input",
+           "type": "object",
+           "description": "A time picker input, used for specifying time-related fields like arrival time, departure time, or schedules.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "time" },
+             "min": { "type": "string", "format": "time", "description": "Earliest selectable time." },
+             "max": { "type": "string", "format": "time", "description": "Latest selectable time." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Telephone Input",
+           "type": "object",
+           "description": "An input field for telephone numbers with optional pattern validation.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "tel" },
+             "pattern": { "type": "string", "description": "Regex for phone number validation." },
+             "placeholder": { "type": "string", "description": "Example: +1-555-555-5555." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         },
+         {
+           "title": "Select Dropdown",
+           "type": "object",
+           "description": "A dropdown menu for users to choose from predefined options, such as gender, country, or categories.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "select" },
+             "options": {
+               "type": "array",
+               "description": "List of available choices.",
+               "items": {
+                 "type": "object",
+                 "properties": {
+                   "value": { "type": "string" },
+                   "label": { "type": "string" }
+                 },
+                 "required": ["value", "label"]
+               }
+             },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type", "options"]
+         },
+         {
+           "title": "Textarea",
+           "type": "object",
+           "description": "A multi-line text area for users to enter longer inputs such as descriptions, comments, or feedback.",
+           "properties": {
+             "id": { "type": "string" },
+             "label": { "type": "string" },
+             "type": { "const": "textarea" },
+             "rows": { "type": "integer", "description": "Number of visible rows." },
+             "maxLength": { "type": "integer", "description": "Maximum allowed characters." },
+             "hidden": {
+               "type": "boolean",
+               "description": "If true, this field is hidden from the user."
+             }
+           },
+           "required": ["id", "label", "type"]
+         }
+       ]
+     }
+   }
+ },
+ "required": ["id", "fields"]
+}
