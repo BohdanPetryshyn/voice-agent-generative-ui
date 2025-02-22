@@ -1,0 +1,16 @@
+{
+    "fields": [
+      {
+        "id": "flightNumber",
+        "type": "text",
+        "label": "Flight Number",
+        "placeholder": "Enter your flight number"
+      },
+      {
+        "id": "email",
+        "type": "select",
+        "label": "Year of birth"
+      }
+    ]
+  }
+  
