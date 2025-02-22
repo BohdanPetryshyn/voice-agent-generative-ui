@@ -1,0 +1,79 @@
+.convai-form-container {
+	opacity: 0;
+	transform: translatey(15%);
+	position: fixed;
+	z-index: 999999;
+	right: 344px;
+	bottom: 32px;
+	max-width: 500px;
+	max-height: calc(100vh - 96px);
+	overflow-y: auto;
+	width: 400px;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 64px 64px;
+	background-color: white;
+	padding: 20px;
+	border: 1px white solid;
+	border-radius: 20px;
+	transition: transform ease-out 0.5s, opacity ease-out 0.5s;
+}
+
+.convai-form-container-show {
+	transform: translatey(0%);
+	opacity: 1;
+}
+
+.convai-form-container form {
+	display: flex;
+	flex-direction: column;
+	font-family: inter, sans-serif;
+	color: #323235;
+	font-size: 14px;
+	width: 100%;
+}
+
+.convai-form-container form .input-group {
+ display: flex;
+  flex-direction: column;
+}
+
+.convai-form-container form .input-group:not(:first-child) {
+	margin-top: 16px;
+}
+
+.convai-form-container form label {
+	display: block;
+	color: rgb(15, 15, 16);
+	font-weight: 500;
+	margin-bottom: 4px;
+	line-height: 20px;
+}
+
+.convai-form-container form input, .convai-form-container form textarea, .convai-form-container form select {
+	border-radius: 8px;
+	border: 1px solid #00001d1a;
+	outline: none;
+	width: 100%;
+	box-shadow: none;
+	line-height: 24px;
+	margin-bottom: 4px;
+	box-sizing: border-box;
+}
+
+.convai-form-container form input, .convai-form-container form select {
+	height: 40px;
+	padding: 0 12px;
+}
+
+.convai-form-container form textarea {
+	padding: 8px 12px;
+}
+
+.convai-form-container form input:focus,
+.convai-form-container form input:focus-within,
+.convai-form-container form textarea:focus,
+.convai-form-container form select:focus {
+	border-color: rgb(36, 36, 38);
+	box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px, rgb(36, 36, 38) 0px 0px 0px 1px, rgba(0, 0, 0, 0) 0px 0px 0px 0px;
+	outline: 2px solid transparent;
+  outline-offset: 2px;
+}

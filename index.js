@@ -1,9 +1,13 @@
+const FORM_SHOW_CLASS = "convai-form-container-show";
 document.addEventListener("DOMContentLoaded", () => {
     const widget = document.querySelector("elevenlabs-convai");
 
     // Create the form element once
+    const formContainer = document.createElement("div");
+    formContainer.classList.add("convai-form-container");
+    document.body.appendChild(formContainer);
     const form = document.createElement("form");
-    document.body.appendChild(form);
+    formContainer.appendChild(form);
     // Function to render form fields - now has access to form variable from closure
     function renderFormFields(formSchema) {
         formSchema.fields.forEach(field => {
@@ -14,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const fieldWrapper = document.createElement("div");
-            fieldWrapper.classList.add("form-group");
+            fieldWrapper.classList.add("input-group");
 
             const label = document.createElement("label");
             label.textContent = field.label;
@@ -91,7 +95,10 @@ document.addEventListener("DOMContentLoaded", () => {
             event.detail.config.clientTools = {
                 'close_form': () => {
                     console.log("close_form called");
-                    form.innerHTML = '';
+
+                    formContainer.classList.remove(FORM_SHOW_CLASS)
+                    setTimeout(() => form.innerHTML = '', 500)
+                    
                     console.log("close_form completed");
                 },
                 'get_form_state': () => {
@@ -111,6 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     
                     // Render new form contents
                     renderFormFields(JSON.parse(formSchema));
+                    formContainer.classList.add(FORM_SHOW_CLASS);
+
                     return 'form_is_ready';
                 },
             };
