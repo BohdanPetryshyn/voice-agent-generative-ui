@@ -1,4 +1,4 @@
-const FORM_SHOW_CLASS = "convai-form-container-show";
+import './styles.css';
 
 // Debounce function to limit how often validation runs
 function debounce(func, wait) {
@@ -13,8 +13,15 @@ function debounce(func, wait) {
     };
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+// Initialize the form functionality
+function initConvaiForm() {
+    const FORM_SHOW_CLASS = "convai-form-container-show";
     const widget = document.querySelector("elevenlabs-convai");
+
+    if (!widget) {
+        console.warn("ElevenLabs Conversational AI widget not found");
+        return;
+    }
 
     // Create the form element once
     const formContainer = document.createElement("div");
@@ -22,7 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.appendChild(formContainer);
     const form = document.createElement("form");
     formContainer.appendChild(form);
-    // Function to render form fields - now has access to form variable from closure
+
+    // Function to render form fields
     function renderFormFields(formSchema) {
         formSchema.fields.forEach(field => {
             // Skip adding the field if it's marked as hidden
@@ -53,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     inputElement.appendChild(optionElement);
                 });
 
-                // Set the pre-selected value if it exists
                 if (field.value !== undefined) {
                     inputElement.value = field.value;
                 }
@@ -61,16 +68,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 inputElement = document.createElement("textarea");
                 inputElement.id = field.id;
                 inputElement.name = field.id;
-                
+
                 if (field.rows) {
                     inputElement.rows = field.rows;
                 }
-                
+
                 if (field.maxLength) {
                     inputElement.maxLength = field.maxLength;
                 }
-                
-                // Set the pre-filled text content if it exists
+
                 if (field.value !== undefined) {
                     inputElement.value = field.value;
                 }
@@ -110,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
                         break;
                 }
 
-                // Set the pre-filled value if it exists
                 if (field.value !== undefined) {
                     if (field.type === "number" && field.value === null) {
                         inputElement.value = "";
@@ -192,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Add input event listener for real-time validation
             inputElement.addEventListener("input", debouncedValidate);
-            
+
             // Also validate on blur immediately (when user leaves the field)
             inputElement.addEventListener("blur", validateField);
 
@@ -202,41 +207,43 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (widget) {
-        console.log("PromptUser tool initialized");
+    // Add event listener for widget initialization
+    widget.addEventListener("elevenlabs-convai:call", (event) => {
+        event.detail.config.clientTools = {
+            'close_form': () => {
+                console.log("close_form called");
+                formContainer.classList.remove(FORM_SHOW_CLASS);
+                setTimeout(() => form.innerHTML = '', 500);
+                console.log("close_form completed");
+            },
+            'get_form_state': () => {
+                console.log("get_form_state called");
+                if (!form.firstChild) {
+                    return 'There is no form to get state from.';
+                }
+                const formData = JSON.stringify(Object.fromEntries(new FormData(form)));
+                console.log("get_form_state returned:", formData);
+                return formData;
+            },
+            'create_or_update_form': ({ formSchema }) => {
+                console.log("create_or_update_form called with:", formSchema);
+                form.innerHTML = '';
+                renderFormFields(JSON.parse(formSchema));
+                formContainer.classList.add(FORM_SHOW_CLASS);
+                return 'form_is_ready';
+            },
+        };
+    });
 
-        widget.addEventListener("elevenlabs-convai:call", (event) => {
-            event.detail.config.clientTools = {
-                'close_form': () => {
-                    console.log("close_form called");
+    console.log("ElevenLabs Conversational AI Form extension initialized");
+}
 
-                    formContainer.classList.remove(FORM_SHOW_CLASS)
-                    setTimeout(() => form.innerHTML = '', 500)
-                    
-                    console.log("close_form completed");
-                },
-                'get_form_state': () => {
-                    console.log("get_form_state called");
-                    if (!form.firstChild) {
-                        return 'There is no form to get state from.';
-                    }
+// Auto-initialize when the DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConvaiForm);
+} else {
+    initConvaiForm();
+}
 
-                    const formData = JSON.stringify(Object.fromEntries(new FormData(form)));
-                    console.log("get_form_state returned:", formData);
-                    return formData;
-                },
-                'create_or_update_form': ({ formSchema }) => {
-                    console.log("create_or_update_form called with:", formSchema);
-                    // Clear existing form contents
-                    form.innerHTML = '';
-                    
-                    // Render new form contents
-                    renderFormFields(JSON.parse(formSchema));
-                    formContainer.classList.add(FORM_SHOW_CLASS);
-
-                    return 'form_is_ready';
-                },
-            };
-        });
-    }
-});
+// Export for manual initialization if needed
+export { initConvaiForm };
