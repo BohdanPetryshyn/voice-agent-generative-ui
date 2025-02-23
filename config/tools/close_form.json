@@ -1,0 +1,8 @@
+{
+    "type": "client",
+    "name": "close_form",
+    "description": "The tool closes the form. Always use `get_form_state` before closing the form to ensure that the user has submitted all the necessary information and avoid losing their work.",
+    "parameters": null,
+    "expects_response": false,
+    "response_timeout_secs": null
+}

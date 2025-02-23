@@ -1,0 +1,9 @@
+
+{
+    "type": "client",
+    "name": "get_form_state",
+    "description": "The tool returns the state of the form's input fields. You can use this tool to see the progress of the user filling out the form. This might be useful when user asks you a question about one of the fields in the form.",
+    "parameters": null,
+    "expects_response": true,
+    "response_timeout_secs": 1
+}
