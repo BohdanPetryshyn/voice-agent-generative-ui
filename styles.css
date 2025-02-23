@@ -36,6 +36,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
+	position: relative;
 }
 
 .convai-form-container form .input-group:not(:first-child) {
@@ -102,6 +103,33 @@
 	background-repeat: no-repeat;
 	background-position: right 12px center;
 	padding-right: 32px;
+}
+
+.convai-form-container form .validation-message {
+	color: #E53935;
+	font-size: 12px;
+	margin-top: 4px;
+	display: none;
+	line-height: 1.4;
+}
+
+.convai-form-container form input.invalid,
+.convai-form-container form textarea.invalid,
+.convai-form-container form select.invalid {
+	border-color: #E53935;
+}
+
+.convai-form-container form input.invalid:focus,
+.convai-form-container form textarea.invalid:focus,
+.convai-form-container form select.invalid:focus {
+	border-color: #E53935;
+	box-shadow: 0 0 0 1px #E53935;
+}
+
+.convai-form-container form input.invalid + .validation-message,
+.convai-form-container form textarea.invalid + .validation-message,
+.convai-form-container form select.invalid + .validation-message {
+	display: block;
 }
 
 .convai-form-container::-webkit-scrollbar {

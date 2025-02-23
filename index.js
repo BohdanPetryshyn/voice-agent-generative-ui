@@ -48,6 +48,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 inputElement.id = field.id;
                 inputElement.name = field.id;
                 
+                if (field.rows) {
+                    inputElement.rows = field.rows;
+                }
+                
+                if (field.maxLength) {
+                    inputElement.maxLength = field.maxLength;
+                }
+                
                 // Set the pre-filled text content if it exists
                 if (field.value !== undefined) {
                     inputElement.value = field.value;
@@ -56,23 +64,40 @@ document.addEventListener("DOMContentLoaded", () => {
                 inputElement = document.createElement("input");
                 inputElement.id = field.id;
                 inputElement.name = field.id;
-                inputElement.type = field.type || "text";
+                inputElement.type = field.type;
 
-                if (field.validation) {
-                    if (field.validation.pattern) {
-                        inputElement.pattern = field.validation.pattern;
-                    }
-                    if (field.validation.min !== undefined) {
-                        inputElement.min = field.validation.min;
-                    }
-                    if (field.validation.max !== undefined) {
-                        inputElement.max = field.validation.max;
-                    }
+                if (field.placeholder) {
+                    inputElement.placeholder = field.placeholder;
+                }
+
+                // Handle specific field types according to schema
+                switch (field.type) {
+                    case "text":
+                        if (field.maxLength) {
+                            inputElement.maxLength = field.maxLength;
+                        }
+                        break;
+                    case "email":
+                    case "tel":
+                        if (field.pattern) {
+                            inputElement.pattern = field.pattern;
+                        }
+                        break;
+                    case "number":
+                    case "date":
+                    case "datetime-local":
+                    case "time":
+                        if (field.min !== undefined) {
+                            inputElement.min = field.min;
+                        }
+                        if (field.max !== undefined) {
+                            inputElement.max = field.max;
+                        }
+                        break;
                 }
 
                 // Set the pre-filled value if it exists
                 if (field.value !== undefined) {
-                    // For number inputs, we need to handle null value specially
                     if (field.type === "number" && field.value === null) {
                         inputElement.value = "";
                     } else {
@@ -81,7 +106,73 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
+            // Add validation message element
+            const validationMessage = document.createElement("div");
+            validationMessage.classList.add("validation-message");
+
+            // Add input event listener for real-time validation
+            inputElement.addEventListener("input", () => {
+                if (!inputElement.validity.valid) {
+                    let message = "";
+                    if (inputElement.validity.valueMissing) {
+                        message = "This field is required";
+                    } else if (inputElement.validity.typeMismatch) {
+                        switch(field.type) {
+                            case "email":
+                                message = "Please enter a valid email address";
+                                break;
+                            case "tel":
+                                message = "Please enter a valid phone number";
+                                break;
+                            default:
+                                message = `Please enter a valid ${field.type}`;
+                        }
+                    } else if (inputElement.validity.patternMismatch) {
+                        switch(field.type) {
+                            case "tel":
+                                message = "Please enter a valid phone number format";
+                                break;
+                            case "email":
+                                message = "Please enter a valid email format";
+                                break;
+                            default:
+                                message = "Please match the requested format";
+                        }
+                    } else if (inputElement.validity.tooLong) {
+                        message = `Please enter no more than ${inputElement.maxLength} characters`;
+                    } else if (inputElement.validity.rangeUnderflow) {
+                        switch(field.type) {
+                            case "date":
+                            case "datetime-local":
+                                message = `Please select a date from ${field.min} onwards`;
+                                break;
+                            case "time":
+                                message = `Please select a time from ${field.min} onwards`;
+                                break;
+                            default:
+                                message = `Please enter a value greater than or equal to ${field.min}`;
+                        }
+                    } else if (inputElement.validity.rangeOverflow) {
+                        switch(field.type) {
+                            case "date":
+                            case "datetime-local":
+                                message = `Please select a date up to ${field.max}`;
+                                break;
+                            case "time":
+                                message = `Please select a time up to ${field.max}`;
+                                break;
+                            default:
+                                message = `Please enter a value less than or equal to ${field.max}`;
+                        }
+                    }
+                    validationMessage.textContent = message;
+                } else {
+                    validationMessage.textContent = "";
+                }
+            });
+
             fieldWrapper.appendChild(inputElement);
+            fieldWrapper.appendChild(validationMessage);
             form.appendChild(fieldWrapper);
         });
     }
