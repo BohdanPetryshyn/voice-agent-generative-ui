@@ -1,4 +1,18 @@
 const FORM_SHOW_CLASS = "convai-form-container-show";
+
+// Debounce function to limit how often validation runs
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     const widget = document.querySelector("elevenlabs-convai");
 
@@ -110,8 +124,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const validationMessage = document.createElement("div");
             validationMessage.classList.add("validation-message");
 
-            // Add input event listener for real-time validation
-            inputElement.addEventListener("input", () => {
+            // Create validation function
+            const validateField = () => {
                 if (!inputElement.validity.valid) {
                     let message = "";
                     if (inputElement.validity.valueMissing) {
@@ -166,10 +180,21 @@ document.addEventListener("DOMContentLoaded", () => {
                         }
                     }
                     validationMessage.textContent = message;
+                    inputElement.classList.add("invalid");
                 } else {
                     validationMessage.textContent = "";
+                    inputElement.classList.remove("invalid");
                 }
-            });
+            };
+
+            // Debounce the validation with 500ms delay
+            const debouncedValidate = debounce(validateField, 500);
+
+            // Add input event listener for real-time validation
+            inputElement.addEventListener("input", debouncedValidate);
+            
+            // Also validate on blur immediately (when user leaves the field)
+            inputElement.addEventListener("blur", validateField);
 
             fieldWrapper.appendChild(inputElement);
             fieldWrapper.appendChild(validationMessage);
@@ -181,8 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("PromptUser tool initialized");
 
         widget.addEventListener("elevenlabs-convai:call", (event) => {
-
-
             event.detail.config.clientTools = {
                 'close_form': () => {
                     console.log("close_form called");
