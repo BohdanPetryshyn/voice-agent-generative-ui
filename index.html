@@ -4,8 +4,111 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: #f6f8fc;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 256px 1fr;
+        grid-template-rows: 64px 1fr;
+        height: 100vh;
+      }
+
+      .header {
+        grid-column: 1 / -1;
+        background: rgba(255, 255, 255, 0.9);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+      }
+
+      .header-placeholder {
+        width: 120px;
+        height: 24px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 4px;
+      }
+
+      .sidebar {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 20px;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar-item {
+        height: 32px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 16px;
+        margin-bottom: 12px;
+      }
+
+      .main-content {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .email-item {
+        height: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      .search-bar {
+        width: 100%;
+        max-width: 720px;
+        height: 48px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 24px;
+        margin: 20px auto;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+      }
+
+      elevenlabs-convai {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+      }
+    </style>
   </head>
   <body>
+    <div class="layout">
+      <header class="header">
+        <div class="header-placeholder"></div>
+      </header>
+      
+      <nav class="sidebar">
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+        <div class="sidebar-item"></div>
+      </nav>
+      
+      <main class="main-content">
+        <div class="search-bar"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+        <div class="email-item"></div>
+      </main>
+    </div>
+
     <elevenlabs-convai agent-id="mBT29NthR0RqAKy7LO59"></elevenlabs-convai>
     <script
       src="https://elevenlabs.io/convai-widget/index.js"
@@ -16,7 +119,6 @@
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", () => {
         const widget = document.querySelector("elevenlabs-convai");
-
         if (widget) {
           widget.addEventListener("elevenlabs-convai:call", (event) => {
             event.detail.config.clientTools = {
