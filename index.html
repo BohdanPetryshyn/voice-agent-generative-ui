@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Generative UI Email Agent Demo</title>
     <style>
       body {
         margin: 0;
@@ -27,6 +27,7 @@
         display: flex;
         align-items: center;
         padding: 0 20px;
+        gap: 24px;
       }
 
       .header-placeholder {
@@ -34,6 +35,13 @@
         height: 24px;
         background: rgba(0, 0, 0, 0.05);
         border-radius: 4px;
+      }
+
+      .header-title {
+        font-size: 22px;
+        font-weight: 500;
+        color: #1f2937;
+        margin: 0;
       }
 
       .sidebar {
@@ -85,6 +93,7 @@
     <div class="layout">
       <header class="header">
         <div class="header-placeholder"></div>
+        <h1 class="header-title">Generative UI Email Agent Demo</h1>
       </header>
       
       <nav class="sidebar">
@@ -111,11 +120,11 @@
 
     <elevenlabs-convai agent-id="mBT29NthR0RqAKy7LO59"></elevenlabs-convai>
     <script
-      src="https://elevenlabs.io/convai-widget/index.js"
+      src="/convai-widget/index.js"
       async
       type="text/javascript"
     ></script>
-    <script src="./dist/index.dev.js" type="text/javascript"></script>
+    <script src="/dist/index.dev.js" type="text/javascript"></script>
     <script type="text/javascript">
       document.addEventListener("DOMContentLoaded", () => {
         const widget = document.querySelector("elevenlabs-convai");
