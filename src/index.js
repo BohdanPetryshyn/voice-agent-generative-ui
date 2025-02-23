@@ -31,8 +31,8 @@ function initConvaiForm() {
     formContainer.appendChild(form);
 
     // Function to render form fields
-    function renderFormFields(formSchema) {
-        formSchema.fields.forEach(field => {
+    function renderFormFields(formDescription) {
+        formDescription.fields.forEach(field => {
             // Skip adding the field if it's marked as hidden
             if (field.hidden === true) {
                 console.log(`Skipping hidden field: ${field.id}`);
@@ -210,6 +210,7 @@ function initConvaiForm() {
     // Add event listener for widget initialization
     widget.addEventListener("elevenlabs-convai:call", (event) => {
         event.detail.config.clientTools = {
+            ... event.detail.config.clientTools,
             'close_form': () => {
                 console.log("close_form called");
                 formContainer.classList.remove(FORM_SHOW_CLASS);
@@ -225,12 +226,11 @@ function initConvaiForm() {
                 console.log("get_form_state returned:", formData);
                 return formData;
             },
-            'create_or_update_form': ({ formSchema }) => {
-                console.log("create_or_update_form called with:", formSchema);
+            'create_or_update_form': ({ formDescription }) => {
+                console.log("create_or_update_form called with:", formDescription);
                 form.innerHTML = '';
-                renderFormFields(JSON.parse(formSchema));
+                renderFormFields(JSON.parse(formDescription));
                 formContainer.classList.add(FORM_SHOW_CLASS);
-                return 'form_is_ready';
             },
         };
     });
