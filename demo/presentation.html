@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generative UI Forms</title>
+    <style>
+      :root {
+        --primary: #2563eb;
+        --text: #1f2937;
+        --background: #f8fafc;
+        --card: #ffffff;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        background: var(--background);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        color: var(--text);
+      }
+
+      .presentation {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 48px;
+        min-height: 100vh;
+        align-items: center;
+      }
+
+      .content {
+        padding-right: 48px;
+      }
+
+      h1 {
+        font-size: 48px;
+        line-height: 1.1;
+        margin: 0 0 32px;
+        background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 700;
+      }
+
+      .features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 20px;
+        line-height: 1.4;
+      }
+
+      .feature-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: var(--primary);
+        color: white;
+      }
+
+      .demo {
+        background: var(--card);
+        padding: 32px;
+        border-radius: 24px;
+        box-shadow: 
+          0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+
+      .demo img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1);
+      }
+
+      @media (max-width: 1024px) {
+        .presentation {
+          grid-template-columns: 1fr;
+          padding: 24px;
+        }
+
+        .content {
+          padding-right: 0;
+        }
+
+        h1 {
+          font-size: 36px;
+        }
+
+        .feature {
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="presentation">
+      <div class="content">
+        <h1>Generative UI Toolkit for ElevenLabs Conversational AI Agent</h1>
+        <ul class="features">
+          <li class="feature">
+            <span class="feature-icon">🎯</span>
+            <span>Dynamic form generation during conversations</span>
+          </li>
+          <li class="feature">
+            <span class="feature-icon">✨</span>
+            <span>Beautiful, modern UI that matches ElevenLabs design</span>
+          </li>
+          <li class="feature">
+            <span class="feature-icon">✓</span>
+            <span>Real-time validation with user-friendly messages</span>
+          </li>
+          <li class="feature">
+            <span class="feature-icon">🛠</span>
+            <span>Extensive set of input types that work out of the box</span>
+          </li>
+        </ul>
+      </div>
+      <div class="demo">
+        <img src="./images/showcase-2.png" alt="Form Demo" />
+      </div>
+    </main>
+  </body>
+</html>

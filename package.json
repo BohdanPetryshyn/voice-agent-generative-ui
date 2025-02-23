@@ -1,6 +1,6 @@
 {
   "name": "11labs-community-gen-ui-forms",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Generative UI Forms for ElevenLabs Conversational AI (not affiliated with ElevenLabs)",
   "main": "dist/index.js",
   "scripts": {
